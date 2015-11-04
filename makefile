@@ -4,7 +4,7 @@ FILES :=                              \
 #    collatz-tests/EID-RunCollatz.out  \
 #    collatz-tests/EID-TestCollatz.c++ \
 #    collatz-tests/EID-TestCollatz.out \
-#	Darwin.pdf
+#	Darwin.pdf						  \
     Darwin.c++                       \
     Darwin.h                         \
     Darwin.log                       \
