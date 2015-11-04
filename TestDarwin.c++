@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "Darwin.h"
+#include "Darwin.c++"
 
 using namespace std;
 
@@ -25,12 +25,15 @@ using namespace std;
 // }
 
 TEST(DarwinFixture, addCreature_1) {
-	Species s;
-	Creature c(s);
+	Species s('f');
+	Creature c(s, 0);
 	cout << (c._s).name << endl;
 	Darwin d(10, 10);
-	cout << ((d.grid)[0, 0]).name << endl;
 	d.addCreature(c, 3, 4);
+	Creature c1 = (d.grid)[19];
+	cout << (c1._s).name << endl;
+	c1 = (d.grid)[18];
+	cout << (c1._s).name << endl;
 }
 
 // g++ -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall Darwin.c++ TestDarwin.c++ -o TestDarwin -lgtest -lgtest_main -lpthread

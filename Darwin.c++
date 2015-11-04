@@ -4,21 +4,21 @@
 #include <vector>    // vector
 #include <utility>   // pair
 
-#include "Darwin.h"
+// #include "Darwin.h"
 
 using namespace std;
 
-// enum Instruction {
-// 	hop,
-// 	lft,
-// 	rght,
-// 	infect,
-// 	if_empty,
-// 	if_wall,
-// 	if_random,
-// 	if_enemy,
-// 	go
-// };
+enum Instruction {
+	hop,
+	lft,
+	rght,
+	infect,
+	if_empty,
+	if_wall,
+	if_random,
+	if_enemy,
+	go
+};
 
 class Species {
 	public:
@@ -80,31 +80,65 @@ class Creature {
 		int direction;
 	 	int pc;
 	 	bool didMove;
+	 	bool isNull;
 
 	public:
-		void Creature() { // default constructor
+		Creature() { // default constructor
+			isNull = true;
 		}
-	 	void Creature(const Species& s, int d) { // initialized constructor
+	 	Creature(const Species& s, int d) { // initialized constructor
 	 		_s = s;
 	 		direction = d;
 	 		pc = 0;
 	 		didMove = false;
+	 		isNull = false;
 	 	}
-	 	// void makeMove(Darwin d) {
-	 	// }
+	 	void makeMove(const Darwin& d) {
+ 			// moves
+	 	}
+};
+
+template<typename T>;
+class D_Iterator {
+	private:
+		T _v;
+	
+	public:
+		D_Iterator(const T& v) {
+			_v = v;
+		}
+		bool operator == (const D_Iterator& rhs) const {
+			return (&_v == &(rhs._v));
+		}
+		bool operator != (const D_Iterator& rhs) const {
+			return !(*this == rhs);
+		}
+		const T& operator * () const {
+			return _v;
+		}
+		D_Iterator& operator ++ () { // pre increment
+			++&_v;
+			return *this;
+		}
+		D_Iterator& operator ++ (int) { // post increment
+			D_Iterator d = *this;
+			++*this;
+			return d;
+		}
 };
 
 class Darwin { 
 	public:
-		vector<Creature> grid;
 		int x_axis;
 		int y_axis;
 		int turn;
 
 	public:
-		void Darwin() {
+		vector<Creature> grid;
+
+		Darwin() {
 		}
-		void Darwin(int h, int w) {
+		Darwin(int h, int w) {
 			x_axis = w;
 			y_axis = h;
 			for(int i = 0; i < w*h; i++) {
@@ -114,10 +148,27 @@ class Darwin {
 		}
 		void addCreature(const Creature& c, int x, int y) {
 			int position = (x + 1) * (y + 1); 
-			grid[position - 1] = c;
+			grid[position-1] = c;
+		}
+		void executeTurn() {
+			++turn; 
+			D_Iterator b = (*this).begin();
+			D_Iterator e = (*this).end();
+			while(b != e) {
+				if(!(*b).isNull)
+					(*b).makeMove(*this);
+				++b;
+			}
 		}
 		// void createGrid(int);
 		// Creature at(int);
-		// Iterator begin(void);
-		// Iterator end(void);
+		D_Iterator begin() {
+			D_Iterator<Creature> b = grid[0];
+			return b;
+		}
+		D_Iterator end() {
+			int end = x_axis*y_axis;
+			D_Iterator<Creature> e = grid[end-1];
+			return e;
+		}
 };
