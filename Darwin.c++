@@ -46,11 +46,15 @@ Species::Species(char initial) {
 	} // initialized constructor
 }
 void Species::addInstruction(Instruction ins) { // adds actions
+	if(name == '.')
+		name = 'd';
 	pair<Instruction, int> action;
 	action = make_pair(ins, -1);
 	instructions.push_back(action);
 }
 void Species::addInstruction(Instruction ins, int line) { // adds controls
+	if(name == '.')
+		name = 'd';
 	pair<Instruction, int> control;
 	control = make_pair(ins, line);
 	instructions.push_back(control);
@@ -72,7 +76,7 @@ Creature::Creature(const Species& s, int d) { // initialized constructor
 	didMove = false;
 	isNull = false;
 }
-void Creature::makeMove(Darwin& d, int i) {
+int Creature::makeMove(Darwin& d, int i) {
 	// moves
 	if(!isNull && !didMove) {
 		// cout << _s.name << " " << direction << endl;
@@ -84,30 +88,30 @@ void Creature::makeMove(Darwin& d, int i) {
 				Creature* c_pointer = &(d.spaceAhead(*this, i));
 				if(c_pointer != this || (*c_pointer).isNull) {
 					if(direction == 0) {	// west
+						++pc;
+						didMove = true;
 						Creature c_tmp = *this;
-						++(c_tmp.pc);
-						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i - 1] = c_tmp;
 					}
 					else if(direction == 1) {	// north
+						++pc;
+						didMove = true;
 						Creature c_tmp = *this;
-						++(c_tmp.pc);
-						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i - d.x_axis] = c_tmp;
 					}
 					else if(direction == 2) {	// east
+						++pc;
+						didMove = true;
 						Creature c_tmp = *this;
-						++(c_tmp.pc);
-						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i + 1] = c_tmp;
 					}
 					else if(direction == 3) {	// south
+						++pc;
+						didMove = true;
 						Creature c_tmp = *this;
-						++(c_tmp.pc);
-						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i + d.x_axis] = c_tmp;
 					}
@@ -132,7 +136,7 @@ void Creature::makeMove(Darwin& d, int i) {
 
 			case INFECT: {
 				Creature* c_pointer = &(d.spaceAhead(*this, i));
-				if(c_pointer != this && ((*c_pointer)._s).name != _s.name) {
+				if(c_pointer != this && (*c_pointer)._s.name != _s.name) {
 					(*c_pointer)._s = _s;
 					(*c_pointer).pc = 0;
 				}
@@ -166,7 +170,6 @@ void Creature::makeMove(Darwin& d, int i) {
 
 			case IF_RANDOM: {
 				int n = rand();
-				// cout << n << endl;
 				if(n % 2 == 0) {
 					++pc;
 					(*this).makeMove(d, i);
@@ -195,6 +198,7 @@ void Creature::makeMove(Darwin& d, int i) {
 			}break;
 		}
 	}
+	return pc;
 }
 void Creature::reset() {
 	didMove = false;

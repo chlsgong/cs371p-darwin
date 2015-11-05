@@ -29,6 +29,7 @@ class Species {
 		void addInstruction(Instruction);
 		void addInstruction(Instruction, int);
 		std::pair<Instruction, int> nextInstruction(int);
+		// bool sameName(const Species&);
 };
 
 class Creature {
@@ -43,7 +44,7 @@ class Creature {
 
 		Creature();
 	 	Creature(const Species&, int);
-	 	void makeMove(Darwin&, int);
+	 	int makeMove(Darwin&, int);
 	 	void reset();
 };
 
