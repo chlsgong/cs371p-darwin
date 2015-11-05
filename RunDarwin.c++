@@ -214,6 +214,90 @@ int main () {
 
     cout << "*** Darwin 72x72 with Best ***" << endl;
     srand(0);
+    Darwin d4(72, 72);
+    Species food2('f');
+    Species hopper2('h');
+    Species rover2('r');
+    Species trap2('t');
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(food2, dir);
+        d4.addCreature(c, y, x);
+    }
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(hopper2, dir);
+        d4.addCreature(c, y, x);
+    }
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(rover2, dir);
+        d4.addCreature(c, y, x);
+    }
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(trap2, dir);
+        d4.addCreature(c, y, x);
+    }
+
+    Species best('b');
+    best.addInstruction(IF_EMPTY, 4);
+    best.addInstruction(IF_ENEMY, 6);
+    best.addInstruction(RIGHT);
+    best.addInstruction(GO, 0);
+    best.addInstruction(HOP);
+    best.addInstruction(GO, 0);
+    best.addInstruction(INFECT);
+    best.addInstruction(GO, 0);
+
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature best_creature(best, dir);
+        d4.addCreature(best_creature, y, x);
+    }
+
+    for(int i = 0; i < 1001; i++) {
+        if(i < 10)
+            d4.createGrid();
+        else if(i > 99 && i % 100 == 0)
+            d4.createGrid();
+        if(i == 1000) {
+            D_Iterator<int> b = d4.begin();
+            D_Iterator<int> e = d4.end();
+            
+            int f = 0, h = 0, r = 0, t = 0, bst = 0;
+            while(b != e) {
+                if((d4.grid[*b])._s.name == 'f')
+                    ++f;
+                else if((d4.grid[*b])._s.name == 'h')
+                    ++h;
+                else if((d4.grid[*b])._s.name == 'r')
+                    ++r;
+                else if((d4.grid[*b])._s.name == 't')
+                    ++t;
+                else if((d4.grid[*b])._s.name == 'b')
+                    ++bst;
+                ++b;
+            }
+            // cout << "f: " << f << " h: " << h << " r: " << r << " t: " << t << " bst: "<< bst << endl; 
+        }
+        d4.executeTurn();
+    }
     /*
     Randomly place the following creatures facing randomly.
     Call rand(), mod it with 5184 (72x72), and use that for the position
@@ -234,4 +318,4 @@ int main () {
 
     return 0;}
 
-//  g++ -pedantic -std=c++11 -Wall Voting.c++ RunVoting.c++ -o RunVoting
+//  g++ -pedantic -std=c++11 -Wall Darwin.c++ RunDarwin.c++ -o RunDarwin
