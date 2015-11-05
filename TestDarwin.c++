@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "Darwin.c++"
+#include "Darwin.h"
 
 using namespace std;
 
@@ -35,5 +35,16 @@ TEST(DarwinFixture, addCreature_1) {
 	c1 = (d.grid)[18];
 	cout << (c1._s).name << endl;
 }
+
+// TEST(DarwinFixture, begin_1) {
+// 	Darwin d;
+// 	D_Iterator b = d.begin();
+// 	D_Iterator e = d.end();
+// 	int i = 0;
+// 	while(b != e) {
+// 		++i;
+// 	}
+// 	ASSERT_EQ(i, 100);
+// }
 
 // g++ -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall Darwin.c++ TestDarwin.c++ -o TestDarwin -lgtest -lgtest_main -lpthread

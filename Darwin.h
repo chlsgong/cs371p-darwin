@@ -5,7 +5,7 @@
 #include <iterator>  // iterator
 #include <utility>   // pair
 
-using namespace std;
+class Darwin;
 
 enum Instruction {
 	hop,
@@ -21,7 +21,7 @@ enum Instruction {
 
 class Species {
 	public:
-	 	vector<pair<Instruction, int>> instructions;
+	 	std::vector<std::pair<Instruction, int>> instructions;
 	 	char name;
 
 	public:
@@ -29,7 +29,7 @@ class Species {
 		Species(char);
 		void addInstruction(Instruction);
 		void addInstruction(Instruction, int);
-		// void doNext(Instruction, int);
+		std::pair<Instruction, int> nextInstruction(int);
 };
 
 class Creature {
@@ -38,16 +38,17 @@ class Creature {
 		int direction;
 	 	int pc;
 	 	bool didMove;
+	  	bool isNull;
 
 	public:
 		Creature();
-	 	Creature(Species, int);
-	 	// void makeMove(void);
+	 	Creature(const Species&, int);
+	 	void makeMove(Darwin&, int);
 };
 
 class Darwin { 
 	public:
-		vector<Creature> grid;
+		std::vector<Creature> grid;
 		int x_axis;
 		int y_axis;
 		int turn;
@@ -55,12 +56,15 @@ class Darwin {
 	public:
 		Darwin();
 		Darwin(int, int);
-		void addCreature(Creature, int, int);
+		void addCreature(const Creature&, int, int);
+		Creature& spaceAhead(Creature&, int);
 		// void createGrid(int);
-		// void executeTurn(void);
-		// Creature at(int);
-		// Iterator begin(void);
-		// Iterator end(void);	
+		// void executeTurn();
+		// D_Iterator begin();
+		// D_Iterator end();
+		// Creature at(int i) {
+		// 	return grid[i];
+		// }
 };
 
 #endif // DARWIN_H

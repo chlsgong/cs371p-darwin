@@ -4,171 +4,232 @@
 #include <vector>    // vector
 #include <utility>   // pair
 
-// #include "Darwin.h"
+#include "Darwin.h"
 
 using namespace std;
 
-enum Instruction {
-	hop,
-	lft,
-	rght,
-	infect,
-	if_empty,
-	if_wall,
-	if_random,
-	if_enemy,
-	go
-};
+Species::Species() { // default constructor
+	name = '.';
+}
+Species::Species(char initial) {
+	name = initial;
 
-class Species {
-	public:
-	 	vector<pair<Instruction, int>> instructions;
-		char name;
+	if(initial == 'f') { // food
+		(*this).addInstruction(lft);
+		(*this).addInstruction(go, 0);
+	}
+	else if(initial == 'h') { // hopper
+		(*this).addInstruction(hop);
+		(*this).addInstruction(go, 0);
+	}
+	else if(initial == 'r') { // rover
+		(*this).addInstruction(if_enemy, 9);
+		(*this).addInstruction(if_empty, 7);
+		(*this).addInstruction(if_random, 5);
+		(*this).addInstruction(lft);
+		(*this).addInstruction(go, 0);
+		(*this).addInstruction(rght);
+		(*this).addInstruction(go, 0);
+		(*this).addInstruction(hop);
+		(*this).addInstruction(go, 0);
+		(*this).addInstruction(infect);
+		(*this).addInstruction(go, 0);
+	}
+	else if(initial == 't') { // trap
+		(*this).addInstruction(if_enemy, 3);
+		(*this).addInstruction(lft);
+		(*this).addInstruction(go, 0);
+		(*this).addInstruction(infect);
+		(*this).addInstruction(go, 0);
+	} // initialized constructor
+}
+void Species::addInstruction(Instruction ins) {
+	pair<Instruction, int> action;
+	action = make_pair(ins, -1);
+	instructions.push_back(action);
+}
+void Species::addInstruction(Instruction ins, int line) {
+	pair<Instruction, int> control;
+	control = make_pair(ins, line);
+	instructions.push_back(control);
+}
+pair<Instruction, int> Species::nextInstruction(int pc) {
+	return instructions[pc];
+}
 
-	public:
-		Species() { // default constructor
-			name = '.';
-		}
-		Species(char initial) {
-			name = initial;
 
-			if(initial == 'f') { // food
-				(*this).addInstruction(lft);
-				(*this).addInstruction(go, 0);
-			}
-			else if(initial == 'h') { // hopper
-				(*this).addInstruction(hop);
-				(*this).addInstruction(go, 0);
-			}
-			else if(initial == 'r') { // rover
-				(*this).addInstruction(if_enemy, 9);
-				(*this).addInstruction(if_empty, 7);
-				(*this).addInstruction(if_random, 5);
-				(*this).addInstruction(lft);
-				(*this).addInstruction(go, 0);
-				(*this).addInstruction(rght);
-				(*this).addInstruction(go, 0);
-				(*this).addInstruction(hop);
-				(*this).addInstruction(go, 0);
-				(*this).addInstruction(infect);
-				(*this).addInstruction(go, 0);
-			}
-			else if(initial == 't') { // trap
-				(*this).addInstruction(if_enemy, 3);
-				(*this).addInstruction(lft);
-				(*this).addInstruction(go, 0);
-				(*this).addInstruction(infect);
-				(*this).addInstruction(go, 0);
-			} // initialized constructor
-		}
-		void addInstruction(Instruction ins) {
-			pair<Instruction, int> action;
-			action = make_pair(ins, -1);
-			instructions.push_back(action);
-		}
-		void addInstruction(Instruction ins, int line) {
-			pair<Instruction, int> control;
-			control = make_pair(ins, line);
-			instructions.push_back(control);
-		}
-		// void nextInstruction(Instruction ins, int pc);
-};
 
-class Creature {
-	public:
-		Species _s;
-		int direction;
-	 	int pc;
-	 	bool didMove;
-	 	bool isNull;
+Creature::Creature() { // default constructor
+	isNull = true;
+}
+Creature::Creature(const Species& s, int d) { // initialized constructor
+	_s = s;
+	direction = d;
+	pc = 0;
+	didMove = false;
+	isNull = false;
+}
+void Creature::makeMove(Darwin& d, int i) {
+	// moves
+	if(!isNull && !didMove) {
+		if(pc >= (int) (_s.instructions).size())
+			pc = 0;
+		pair<Instruction, int> nextIns = _s.nextInstruction(pc);
+		switch(nextIns.first) {
+			case hop: {
+				Creature* c_pointer = &(d.spaceAhead(*this, i));
+				if(c_pointer != this || (*c_pointer).isNull) {
+					if(direction == 0) {
+						d.grid[i] = *c_pointer;
+						d.grid[i - 1] = *this;
+					}
+					else if(direction == 1) {
+						d.grid[i] = *c_pointer;
+						d.grid[i - d.x_axis] = *this;
+					}
+					else if(direction == 2) {
+						d.grid[i] = *c_pointer;
+						d.grid[i + 1] = *this;
+					}
+					else if(direction == 3) {
+						d.grid[i] = *c_pointer;
+						d.grid[i + d.x_axis] = *this;
+					}
+				}
+				++pc;
+				didMove = true;
+			}break;
+		
+			case lft: {
+				direction -= 1;
+				if(direction < 0)
+					direction = 3;
+				++pc;
+				didMove = true;
+			}break;
 
-	public:
-		Creature() { // default constructor
-			isNull = true;
-		}
-	 	Creature(const Species& s, int d) { // initialized constructor
-	 		_s = s;
-	 		direction = d;
-	 		pc = 0;
-	 		didMove = false;
-	 		isNull = false;
-	 	}
-	 	void makeMove(const Darwin& d) {
- 			// moves
-	 	}
-};
+			case rght: {
+				direction += 1;
+				if(direction > 3)
+					direction = 0;
+				++pc;
+				didMove = true;
+			}break;
 
-template<typename T>;
-class D_Iterator {
-	private:
-		T _v;
-	
-	public:
-		D_Iterator(const T& v) {
-			_v = v;
-		}
-		bool operator == (const D_Iterator& rhs) const {
-			return (&_v == &(rhs._v));
-		}
-		bool operator != (const D_Iterator& rhs) const {
-			return !(*this == rhs);
-		}
-		const T& operator * () const {
-			return _v;
-		}
-		D_Iterator& operator ++ () { // pre increment
-			++&_v;
-			return *this;
-		}
-		D_Iterator& operator ++ (int) { // post increment
-			D_Iterator d = *this;
-			++*this;
-			return d;
-		}
-};
+			case infect: {
+				Creature* c_pointer = &(d.spaceAhead(*this, i));
+				if(c_pointer != this && ((*c_pointer)._s).name != _s.name) {
+					(*c_pointer)._s = _s;
+					(*c_pointer).pc = 0;
+				}
+				++pc;
+				didMove = true;
+			}break;
 
-class Darwin { 
-	public:
-		int x_axis;
-		int y_axis;
-		int turn;
+			case if_empty: {
+				Creature* c_pointer = &(d.spaceAhead(*this, i));
+				if(c_pointer == this || !(*c_pointer).isNull) {
+					++pc;
+					(*this).makeMove(d, i);
+				}
+				else {
+					pc = nextIns.second;
+					(*this).makeMove(d, i);
+				}
+			}break;
 
-	public:
-		vector<Creature> grid;
+			case if_wall: {
+				Creature* c_pointer = &(d.spaceAhead(*this, i));
+				if(c_pointer != this) {
+					++pc;
+					(*this).makeMove(d, i);
+				}
+				else {
+					pc = nextIns.second;
+					(*this).makeMove(d, i);
+				}
+			}break;
 
-		Darwin() {
+			case if_random: {
+				int n = rand();
+				if(n % 2 == 0) {
+					++pc;
+					(*this).makeMove(d, i);
+				}
+				else {
+					pc = nextIns.second;
+					(*this).makeMove(d, i);
+				}
+			}break;
+
+			case if_enemy: {
+				Creature* c_pointer = &(d.spaceAhead(*this, i));
+				if(c_pointer == this || (*c_pointer).isNull || ((*c_pointer)._s).name == _s.name) {
+					++pc;
+					(*this).makeMove(d, i);
+				}
+				else {
+					pc = nextIns.second;
+					(*this).makeMove(d, i);
+				}
+			}break;
+
+			case go: {
+				pc = nextIns.second;
+				(*this).makeMove(d, i);
+			}break;
 		}
-		Darwin(int h, int w) {
-			x_axis = w;
-			y_axis = h;
-			for(int i = 0; i < w*h; i++) {
-				Creature c;
-				grid.push_back(c);
-			}
-		}
-		void addCreature(const Creature& c, int x, int y) {
-			int position = (x + 1) * (y + 1); 
-			grid[position-1] = c;
-		}
-		void executeTurn() {
-			++turn; 
-			D_Iterator b = (*this).begin();
-			D_Iterator e = (*this).end();
-			while(b != e) {
-				if(!(*b).isNull)
-					(*b).makeMove(*this);
-				++b;
-			}
-		}
-		// void createGrid(int);
-		// Creature at(int);
-		D_Iterator begin() {
-			D_Iterator<Creature> b = grid[0];
-			return b;
-		}
-		D_Iterator end() {
-			int end = x_axis*y_axis;
-			D_Iterator<Creature> e = grid[end-1];
-			return e;
-		}
-};
+	}
+}
+
+Darwin::Darwin() {
+	x_axis = 10;
+	y_axis = 10;
+	for(int i = 0; i < 100; i++) {
+		Creature c;
+		grid.push_back(c);
+	}
+}
+Darwin::Darwin(int h, int w) {
+	x_axis = w;
+	y_axis = h;
+	for(int i = 0; i < w*h; i++) {
+		Creature c;
+		grid.push_back(c);
+	}
+}
+void Darwin::addCreature(const Creature& c, int x, int y) {
+	int position = (x + 1) * (y + 1); 
+	grid[position-1] = c;
+}
+// void Darwin::executeTurn() {
+// 	++turn; 
+// 	D_Iterator<Creature> b = (*this).begin();
+// 	D_Iterator<Creature> e = (*this).end();
+// 	while(b != e) {
+// 		(*b).makeMove(*this);
+// 		++b;
+// 	}
+// }
+Creature& Darwin::spaceAhead(Creature& c, int i) {
+	int d = c.direction;
+	if(d == 0 && i - 1 >= 0) // west
+		return grid[i - 1];
+	else if(d == 1 && i - x_axis >= 0) // north
+		return grid[i - x_axis];
+	else if(d == 2 && i + 1 < x_axis*y_axis) // east
+		return grid[i + 1];
+	else if(d == 3 && i + x_axis < x_axis*y_axis) // south
+		return grid[i + x_axis];
+	else
+		return c;
+}
+// void createGrid(int);
+// Creature at(int);
+// D_Iterator Darwin::begin() {
+//  	return b;
+// }
+// D_Iterator Darwin::end() {
+//  	int end = x_axis*y_axis;
+// 	return e;
+// }
