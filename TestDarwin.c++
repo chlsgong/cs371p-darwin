@@ -117,6 +117,28 @@ TEST(SpeciesFixture, nextInstruction_3) {
 	ASSERT_EQ(line, n);
 }
 
+// creature constructors
+
+TEST(CreatureFixture, creature_1) {
+	Creature c;
+	char species = c._s.name;
+	ASSERT_EQ(species, '.');
+}
+TEST(CreatureFixture, creature_2) {
+	Species s('f');
+	Creature c(s, 0);
+	char species = c._s.name;
+	ASSERT_EQ(species, 'f');
+}
+TEST(CreatureFixture, creature_3) {
+	Species s1('r');
+	Species s2('r');
+	Creature c1(s1, 0);
+	Creature c2(s2, 3);
+	int direction1 = c1.direction;
+	int direction2 = c2.direction;
+	ASSERT_NE(direction1, direction2);
+}
 
 TEST(DarwinFixture, addCreature_1) {
 	Species s('f');
