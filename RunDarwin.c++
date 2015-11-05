@@ -147,6 +147,50 @@ int main () {
 
     cout << "*** Darwin 72x72 without Best ***" << endl;
     srand(0);
+    Darwin d3(72, 72);
+    Species food('f');
+    Species hopper('h');
+    Species rover('r');
+    Species trap('t');
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(food, dir);
+        d3.addCreature(c, y, x);
+    }
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(hopper, dir);
+        d3.addCreature(c, y, x);
+    }
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(rover, dir);
+        d3.addCreature(c, y, x);
+    }
+    for(int i = 0; i < 10; i++) {
+        int p = rand() % 5184;
+        int x = p % 72;
+        int y = p / 72;
+        int dir = rand() % 4;
+        Creature c(trap, dir);
+        d3.addCreature(c, y, x);
+    }
+    for(int i = 0; i < 1001; i++) {
+        if(i < 10)
+            d3.createGrid();
+        else if(i > 99 && i % 100 == 0)
+            d3.createGrid();
+        d3.executeTurn();
+    }
     /*
     Randomly place the following creatures facing randomly.
     Call rand(), mod it with 5184 (72x72), and use that for the position
@@ -189,3 +233,5 @@ int main () {
     */
 
     return 0;}
+
+//  g++ -pedantic -std=c++11 -Wall Voting.c++ RunVoting.c++ -o RunVoting

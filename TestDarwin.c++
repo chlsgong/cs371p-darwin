@@ -138,7 +138,8 @@ TEST(CreatureFixture, creature_3) {
 	Creature c2(s2, 3);
 	int direction1 = c1.direction;
 	int direction2 = c2.direction;
-	ASSERT_NE(direction1, direction2);
+	ASSERT_EQ(direction1, 0);
+	ASSERT_EQ(direction2, 3);
 }
 
 // makeMove
@@ -151,7 +152,7 @@ TEST(CreatureFixture, makeMove_hop_1) {
 	int position = 18;
 	c.makeMove(d, position);
 	Creature t = d.grid[17];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_hop_2) {
 	Species s('h');
@@ -161,7 +162,7 @@ TEST(CreatureFixture, makeMove_hop_2) {
 	int position = 18;
 	c.makeMove(d, position);
 	Creature t = d.grid[13];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_hop_3) {
 	Species s('h');
@@ -171,7 +172,7 @@ TEST(CreatureFixture, makeMove_hop_3) {
 	int position = 18;
 	c.makeMove(d, position);
 	Creature t = d.grid[19];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_hop_4) {
 	Species s('h');
@@ -181,7 +182,7 @@ TEST(CreatureFixture, makeMove_hop_4) {
 	int position = 18;
 	c.makeMove(d, position);
 	Creature t = d.grid[23];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_hop_5) {
 	Species s('h');
@@ -191,7 +192,7 @@ TEST(CreatureFixture, makeMove_hop_5) {
 	int position = 0;
 	c.makeMove(d, position);
 	Creature t = d.grid[0];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_hop_6) {
 	Species s('h');
@@ -201,7 +202,7 @@ TEST(CreatureFixture, makeMove_hop_6) {
 	int position = 0;
 	c.makeMove(d, position);
 	Creature t = d.grid[0];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_hop_7) {
 	Species s('h');
@@ -211,7 +212,7 @@ TEST(CreatureFixture, makeMove_hop_7) {
 	int position = 24;
 	c.makeMove(d, position);
 	Creature t = d.grid[24];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_hop_8) {
 	Species s('h');
@@ -221,7 +222,7 @@ TEST(CreatureFixture, makeMove_hop_8) {
 	int position = 24;
 	c.makeMove(d, position);
 	Creature t = d.grid[24];
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 }
 TEST(CreatureFixture, makeMove_left_1) {
 	Species s('f');
@@ -285,10 +286,9 @@ TEST(CreatureFixture, makeMove_if_empty_1) {
 	c.makeMove(d, position);
 	Creature t = d.grid[17];
 	int direction = t.direction;
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 	ASSERT_EQ(direction, 0);
 }
-
 TEST(CreatureFixture, makeMove_if_empty_2) {
 	Species s1('m');
 	Species s2('f');
@@ -306,7 +306,7 @@ TEST(CreatureFixture, makeMove_if_empty_2) {
 	c1.makeMove(d, position);
 	Creature t = d.grid[17];
 	int direction = c1.direction;
-	ASSERT_NE(c1._s.name, t._s.name);
+	ASSERT_NE(t._s.name, c1._s.name);
 	ASSERT_EQ(direction, 1);
 }
 TEST(CreatureFixture, makeMove_if_wall_1) {
@@ -338,7 +338,7 @@ TEST(CreatureFixture, makeMove_if_wall_2) {
 	c.makeMove(d, position);
 	Creature t = d.grid[17];
 	int direction = c.direction;
-	ASSERT_EQ(c._s.name, t._s.name);
+	ASSERT_EQ(t._s.name, c._s.name);
 	ASSERT_EQ(direction, 0);
 }
 TEST(CreatureFixture, makeMove_if_enemy_1) {
@@ -350,7 +350,7 @@ TEST(CreatureFixture, makeMove_if_enemy_1) {
 	c.makeMove(d, position);
 	Creature t = d.grid[17];
 	int direction = c.direction;
-	ASSERT_NE(c._s.name, t._s.name);
+	ASSERT_NE(t._s.name, c._s.name);
 	ASSERT_EQ(direction, 3);
 }
 TEST(CreatureFixture, makeMove_if_enemy_2) {
@@ -393,6 +393,9 @@ TEST(CreatureFixture, makeMove_go_2) {
 	int direction = c.direction;
 	ASSERT_EQ(direction, 1);
 }
+
+// reset
+
 TEST(CreatureFixture, reset_1) {
 	Species s('r');
 	Creature c(s, 0);
@@ -414,7 +417,7 @@ TEST(CreatureFixture, reset_2) {
 	ASSERT_EQ(pc, 0);
 }
 
-// D_Iterator
+// D_Iterator constructor
 
 TEST(D_IteratorFixture, constructor_1) {
 	D_Iterator<int> x(0);
@@ -428,6 +431,9 @@ TEST(D_IteratorFixture, constructor_3) {
 	D_Iterator<double> x(0.5);
 	ASSERT_EQ(*x, 0.5);
 }
+
+// == operator
+
 TEST(D_IteratorFixture, equal_operator_1) {
 	D_Iterator<int> x(0);
 	D_Iterator<int> y(0);
@@ -448,6 +454,9 @@ TEST(D_IteratorFixture, equal_operator_4) {
 	D_Iterator<double> y(1.5);
 	ASSERT_FALSE(x == y); 
 }
+
+// != operator
+
 TEST(D_IteratorFixture, not_equal_operator_1) {
 	D_Iterator<int> x(0);
 	D_Iterator<int> y(1);
@@ -468,6 +477,9 @@ TEST(D_IteratorFixture, not_equal_operator_4) {
 	D_Iterator<double> y(0.5);
 	ASSERT_FALSE(x != y);
 }
+
+// * operator
+
 TEST(D_IteratorFixture, dereference_operator_1) {
 	D_Iterator<int> x(0);
 	int i = *x + 1;
@@ -477,123 +489,274 @@ TEST(D_IteratorFixture, dereference_operator_2) {
 	D_Iterator<int> x(436375);
 	ASSERT_EQ(x, 436375);
 }
+
+// pre-increment operator
+
 TEST(D_IteratorFixture, pre_increment) {
 	D_Iterator<int> x(0);
 	++x;
 	ASSERT_EQ(x, 1);
 }
+
+// post increment operator
+
 TEST(D_IteratorFixture, post_increment) {
 	D_Iterator<int> x(3);
 	x++;
 	ASSERT_EQ(x, 4);
 }
 
-// Darwin
+// Darwin constructors
 
 TEST(DarwinFixture, constructor_1) {
 	Darwin d;
 	int size = (d.grid).size();
 	ASSERT_EQ(size, 100);
 }
+TEST(DarwinFixture, constructor_2) {
+	Darwin d(1, 1);
+	int size = (d.grid).size();
+	ASSERT_EQ(size, 1);
+}
+TEST(DarwinFixture, constructor_3) {
+	Darwin d(100, 100);
+	int size = (d.grid).size();
+	ASSERT_EQ(size, 10000);
+}
 
-// TEST(DarwinFixture, addCreature_1) {
-// 	Species s('f');
-// 	Creature c(s, 0);
-// 	Darwin d(10, 10);
-// 	d.addCreature(c, 3, 4);
-// }
+// addCreature
 
-// TEST(DarwinFixture, begin_1) {
-// 	Darwin d;
-// 	D_Iterator<int> b = d.begin();
-// 	D_Iterator<int> e = d.end();
-// 	while(b != e) {
-// 		cout << *b << endl;
-// 		++b;
-// 	}
-// 	ASSERT_EQ(*b, 100);
-// }
+TEST(DarwinFixture, addCreature_1) {
+	Species s('t');
+	Creature c(s, 0);
+	Darwin d(5, 5);
+	d.addCreature(c, 3, 3);
+	Creature t = d.grid[18];
+	ASSERT_EQ(t._s.name, c._s.name);
+}
+TEST(DarwinFixture, addCreature_2) {
+	Species s('t');
+	Creature c1(s, 0);
+	Creature c2(s, 1);
+	Darwin d(5, 5);
+	d.addCreature(c1, 0, 0);
+	d.addCreature(c2, 4, 4);
+	Creature t1 = d.grid[0];
+	Creature t2 = d.grid[24];
+	ASSERT_EQ(t1._s.name, c1._s.name);
+	ASSERT_EQ(t2._s.name, c2._s.name);
+}
+TEST(DarwinFixture, addCreature_3) {
+	Species s1('t');
+	Species s2('f');
+	Creature c1(s1, 0);
+	Creature c2(s2, 1);
+	Darwin d(5, 5);
+	d.addCreature(c1, 0, 0);
+	d.addCreature(c2, 0, 0);
+	Creature t = d.grid[0];
+	ASSERT_EQ(t._s.name, c2._s.name);
+}
 
-// TEST(DarwinFixture, createGrid_1) {
-// 	Species s1('f');
-// 	Species s2('h');
-// 	Creature c1(s1, 0);
-// 	Creature c2(s2, 1);
-// 	Darwin d(10, 10);
-// 	d.addCreature(c1, 1, 2);
-// 	d.addCreature(c2, 7, 7);
-// 	d.createGrid();
-// 	for(int i = 0; i < 10; i++) {
-// 		d.executeTurn();
-// 		d.createGrid();
-// 	}
-// }
+// spaceAhead
 
-// TEST(DarwinFixture, createGrid_2) {
-// 	Species s1('f');
-// 	Species s2('h');
-// 	Species s3('r');
-// 	Species s4('t');
-// 	Creature c1(s1, 3); // south
-// 	Creature c2(s2, 1); // north
-// 	Creature c3(s2, 2); // east
-// 	Creature c4(s3, 1); // north
-// 	Creature c5(s4, 2); // east
-// 	Darwin d(20, 15);
-// 	d.addCreature(c1, 17, 3);
-// 	d.addCreature(c2, 8, 2);
-// 	d.addCreature(c3, 10, 10);
-// 	d.addCreature(c4, 19, 14);
-// 	d.addCreature(c5, 0, 1);
-// 	d.createGrid();
-// 	for(int i = 0; i < 20; i++) {
-// 		d.executeTurn();
-// 		d.createGrid();
-// 	}
-// }
+TEST(DarwinFixture, spaceAhead_1) {
+	Species s('t');
+	Creature c(s, 0);
+	Darwin d(5, 5);
+	d.addCreature(c, 3, 3);
+	d.spaceAhead(c, 18);
+	Creature t1 = d.spaceAhead(c, 18);
+	Creature t2 = d.grid[17];
+	ASSERT_EQ(t1._s.name, t2._s.name);
+}
+TEST(DarwinFixture, spaceAhead_2) {
+	Species s1('t');
+	Species s2('f');
+	Creature c1(s1, 0);
+	Creature c2(s2, 1);
+	Darwin d(5, 5);
+	d.addCreature(c1, 0, 1);
+	d.addCreature(c2, 0, 0);
+	Creature t1 = d.spaceAhead(c1, 1);
+	Creature t2 = d.grid[0];
+	ASSERT_EQ(t1._s.name, t2._s.name);
+}
+TEST(DarwinFixture, spaceAhead_3) {
+	Species s('h');
+	Creature c(s, 0);
+	Darwin d(5, 5);
+	d.addCreature(c, 0, 0);
+	Creature t = d.spaceAhead(c, 0);
+	ASSERT_EQ(t._s.name, c._s.name);
+}
 
-// TEST(DarwinFixture, createGrid_3) {
-// 	Species s1('f');
-// 	Species s2('h');
-// 	Creature c1(s1, 2);
-// 	Creature c2(s2, 1);
-// 	Creature c3(s2, 2);
-// 	Creature c4(s2, 3);
-// 	Creature c5(s2, 0);
-// 	Creature c6(s1, 1);
-// 	Darwin d(8, 8);
-// 	d.addCreature(c1, 0, 0);
-// 	d.addCreature(c2, 3, 3);
-// 	d.addCreature(c3, 3, 4);
-// 	d.addCreature(c4, 4, 4);
-// 	d.addCreature(c5, 4, 3);
-// 	d.addCreature(c6, 7, 7);
-// 	d.createGrid();
-// 	for(int i = 0; i < 5; i++) {
-// 		d.executeTurn();
-// 		d.createGrid();
-// 	}
-// }
+// createGrid
 
-// TEST(DarwinFixture, createGrid_4) {
-// 	srand(0);
-// 	Species s1('t');
-// 	Species s2('h');
-// 	Species s3('r');
-// 	Creature c1(s1, 3);
-// 	Creature c2(s2, 2);
-// 	Creature c3(s3, 1);
-// 	Creature c4(s1, 0);
-// 	Darwin d(7, 9);
-// 	d.addCreature(c1, 0, 0);
-// 	d.addCreature(c2, 3, 2);
-// 	d.addCreature(c3, 5, 4);
-// 	d.addCreature(c4, 6, 8);
-// 	d.createGrid();
-// 	for(int i = 0; i < 5; i++) {
-// 		d.executeTurn();
-// 		d.createGrid();
-// 	}
-// }
+TEST(DarwinFixture, createGrid_1) {
+	Species s1('f');
+	Species s2('h');
+	Creature c1(s1, 0);
+	Creature c2(s2, 1);
+	Darwin d(10, 10);
+	d.addCreature(c1, 1, 2);
+	d.addCreature(c2, 7, 7);
+	d.createGrid();
+	for(int i = 0; i < 10; i++) {
+		d.executeTurn();
+		d.createGrid();
+	}
+}
+TEST(DarwinFixture, createGrid_2) {
+	Species s1('f');
+	Species s2('h');
+	Species s3('r');
+	Species s4('t');
+	Creature c1(s1, 3); // south
+	Creature c2(s2, 1); // north
+	Creature c3(s2, 2); // east
+	Creature c4(s3, 1); // north
+	Creature c5(s4, 2); // east
+	Darwin d(20, 15);
+	d.addCreature(c1, 17, 3);
+	d.addCreature(c2, 8, 2);
+	d.addCreature(c3, 10, 10);
+	d.addCreature(c4, 19, 14);
+	d.addCreature(c5, 0, 1);
+	d.createGrid();
+	for(int i = 0; i < 20; i++) {
+		d.executeTurn();
+		d.createGrid();
+	}
+}
+TEST(DarwinFixture, createGrid_3) {
+	Species s1('f');
+	Species s2('h');
+	Creature c1(s1, 2);
+	Creature c2(s2, 1);
+	Creature c3(s2, 2);
+	Creature c4(s2, 3);
+	Creature c5(s2, 0);
+	Creature c6(s1, 1);
+	Darwin d(8, 8);
+	d.addCreature(c1, 0, 0);
+	d.addCreature(c2, 3, 3);
+	d.addCreature(c3, 3, 4);
+	d.addCreature(c4, 4, 4);
+	d.addCreature(c5, 4, 3);
+	d.addCreature(c6, 7, 7);
+	d.createGrid();
+	for(int i = 0; i < 5; i++) {
+		d.executeTurn();
+		d.createGrid();
+	}
+}
+TEST(DarwinFixture, createGrid_4) {
+	srand(0);
+	Species s1('t');
+	Species s2('h');
+	Species s3('r');
+	Creature c1(s1, 3);
+	Creature c2(s2, 2);
+	Creature c3(s3, 1);
+	Creature c4(s1, 0);
+	Darwin d(7, 9);
+	d.addCreature(c1, 0, 0);
+	d.addCreature(c2, 3, 2);
+	d.addCreature(c3, 5, 4);
+	d.addCreature(c4, 6, 8);
+	d.createGrid();
+	for(int i = 0; i < 5; i++) {
+		d.executeTurn();
+		d.createGrid();
+	}
+}
+
+// executeTurn
+
+TEST(DarwinFixture, executeTurn_1) {
+	Species s('h');
+	Creature c(s, 2);
+	Darwin d(5, 5);
+	d.addCreature(c, 0, 0);
+	d.executeTurn();
+	Creature t = d.grid[1];
+	ASSERT_EQ(t._s.name, c._s.name);
+}
+TEST(DarwinFixture, executeTurn_2) {
+	Species s1('h');
+	Species s2('f');
+	Creature c1(s1, 2);
+	Creature c2(s2, 1);
+	Darwin d(5, 5);
+	d.addCreature(c1, 0, 0);
+	d.addCreature(c2, 3, 3);
+	d.executeTurn();
+	Creature t1 = d.grid[1];
+	Creature t2 = d.grid[18];
+	ASSERT_EQ(t1._s.name, c1._s.name);
+	ASSERT_EQ(t2.direction, 0);
+}
+TEST(DarwinFixture, executeTurn_3) {
+	Species s('m');
+	s.addInstruction(RIGHT);
+	s.addInstruction(GO, 0);
+	Creature c(s, 0);
+	Darwin d(5, 5);
+	d.addCreature(c, 0, 0);
+	d.executeTurn();
+	d.executeTurn();
+	Creature t = d.grid[0];
+	ASSERT_EQ(t.direction, 2);
+}
+
+// begin
+
+TEST(DarwinFixture, begin_1) {
+	Species s1('t');
+	Species s2('f');
+	Creature c1(s1, 0);
+	Creature c2(s2, 1);
+	Darwin d(5, 5);
+	d.addCreature(c1, 0, 0);
+	d.addCreature(c2, 0, 1);
+	D_Iterator<int> b = d.begin();
+	ASSERT_EQ((d.grid[*b])._s.name, 't');
+}
+TEST(DarwinFixture, begin_2) {
+	Species s1('t');
+	Species s2('f');
+	Creature c1(s1, 0);
+	Creature c2(s2, 1);
+	Darwin d(5, 5);
+	d.addCreature(c1, 0, 0);
+	d.addCreature(c2, 0, 1);
+	D_Iterator<int> b = d.begin();
+	++b;
+	ASSERT_EQ((d.grid[*b])._s.name, 'f');
+}
+TEST(DarwinFixture, begin_3) {
+	Darwin d;
+	D_Iterator<int> b = d.begin();
+	D_Iterator<int> e = d.end();
+	while(b != e) {
+		++b;
+	}
+	ASSERT_EQ(*b, 100);
+}
+
+// end
+
+TEST(DarwinFixture, end) {
+	Species s1('t');
+	Species s2('f');
+	Creature c1(s1, 0);
+	Creature c2(s2, 1);
+	Darwin d(5, 5);
+	d.addCreature(c1, 4, 3);
+	d.addCreature(c2, 4, 4);
+	D_Iterator<int> e = d.end();
+	ASSERT_EQ((d.grid[*e-1])._s.name, 'f');
+}
 
 // g++ -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall Darwin.c++ TestDarwin.c++ -o TestDarwin -lgtest -lgtest_main -lpthread
