@@ -13,6 +13,8 @@
 #include <iostream>  // cout, endl
 #include <stdexcept> // invalid_argument, out_of_range
 
+#include "Darwin.h"
+
 // ----
 // main
 // ----
@@ -73,6 +75,26 @@ int main () {
     // ----------
 
     cout << "*** Darwin 8x8 ***" << endl;
+    Species s1('f');
+    Species s2('h');
+    Creature c1(s1, 2);
+    Creature c2(s2, 1);
+    Creature c3(s2, 2);
+    Creature c4(s2, 3);
+    Creature c5(s2, 0);
+    Creature c6(s1, 1);
+    Darwin d1(8, 8);
+    d1.addCreature(c1, 0, 0);
+    d1.addCreature(c2, 3, 3);
+    d1.addCreature(c3, 3, 4);
+    d1.addCreature(c4, 4, 4);
+    d1.addCreature(c5, 4, 3);
+    d1.addCreature(c6, 7, 7);
+    d1.createGrid();
+    for(int i = 0; i < 5; i++) {
+        d1.executeTurn();
+        d1.createGrid();
+    }
     /*
     8x8 Darwin
     Food,   facing east,  at (0, 0)
@@ -91,6 +113,23 @@ int main () {
 
     cout << "*** Darwin 7x9 ***" << endl;
     srand(0);
+    Species s3('t');
+    Species s4('h');
+    Species s5('r');
+    Creature c7(s3, 3);
+    Creature c8(s4, 2);
+    Creature c9(s5, 1);
+    Creature c10(s3, 0);
+    Darwin d2(7, 9);
+    d2.addCreature(c7, 0, 0);
+    d2.addCreature(c8, 3, 2);
+    d2.addCreature(c9, 5, 4);
+    d2.addCreature(c10, 6, 8);
+    d2.createGrid();
+    for(int i = 0; i < 5; i++) {
+        d2.executeTurn();
+        d2.createGrid();
+    }
     /*
     7x9 Darwin
     Trap,   facing south, at (0, 0)

@@ -85,7 +85,7 @@ RunDarwin: Darwin.h Darwin.c++ RunDarwin.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Darwin.c++ RunDarwin.c++ -o RunDarwin
 
 RunDarwin.tmp: RunDarwin
-	./RunDarwin < RunDarwin.in > RunDarwin.tmp
+	./RunDarwin > RunDarwin.tmp
 	diff RunDarwin.tmp RunDarwin.out
 
 TestDarwin: Darwin.h Darwin.c++ TestDarwin.c++
