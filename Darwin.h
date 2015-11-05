@@ -8,15 +8,15 @@
 class Darwin;
 
 enum Instruction {
-	hop,
-	lft,
-	rght,
-	infect,
-	if_empty,
-	if_wall,
-	if_random,
-	if_enemy,
-	go
+	HOP,
+	LEFT,
+	RIGHT,
+	INFECT,
+	IF_EMPTY,
+	IF_WALL,
+	IF_RANDOM,
+	IF_ENEMY,
+	GO
 };
 
 class Species {
@@ -24,7 +24,6 @@ class Species {
 	 	std::vector<std::pair<Instruction, int>> instructions;
 	 	char name;
 
-	public:
 		Species();
 		Species(char);
 		void addInstruction(Instruction);
@@ -33,14 +32,15 @@ class Species {
 };
 
 class Creature {
-	public:
-		Species _s;
-		int direction;
+	private:
 	 	int pc;
 	 	bool didMove;
 	  	bool isNull;
 
 	public:
+		Species _s;
+		int direction;
+
 		Creature();
 	 	Creature(const Species&, int);
 	 	void makeMove(Darwin&, int);
@@ -77,13 +77,14 @@ class D_Iterator {
 };
 
 class Darwin { 
-	public:
-		int x_axis;
+	private:
 		int y_axis;
 		int turn;
 
 	public:
 		std::vector<Creature> grid;
+		int x_axis;
+
 		Darwin();
 		Darwin(int, int);
 		void addCreature(const Creature&, int, int);

@@ -17,32 +17,32 @@ Species::Species(char initial) {
 	name = initial;
 
 	if(initial == 'f') { // food
-		(*this).addInstruction(lft);
-		(*this).addInstruction(go, 0);
+		(*this).addInstruction(LEFT);
+		(*this).addInstruction(GO, 0);
 	}
 	else if(initial == 'h') { // hopper
-		(*this).addInstruction(hop);
-		(*this).addInstruction(go, 0);
+		(*this).addInstruction(HOP);
+		(*this).addInstruction(GO, 0);
 	}
 	else if(initial == 'r') { // rover
-		(*this).addInstruction(if_enemy, 9);
-		(*this).addInstruction(if_empty, 7);
-		(*this).addInstruction(if_random, 5);
-		(*this).addInstruction(lft);
-		(*this).addInstruction(go, 0);
-		(*this).addInstruction(rght);
-		(*this).addInstruction(go, 0);
-		(*this).addInstruction(hop);
-		(*this).addInstruction(go, 0);
-		(*this).addInstruction(infect);
-		(*this).addInstruction(go, 0);
+		(*this).addInstruction(IF_ENEMY, 9);	// 0
+		(*this).addInstruction(IF_EMPTY, 7);	// 1
+		(*this).addInstruction(IF_RANDOM, 5);	// 2
+		(*this).addInstruction(LEFT);			// 3
+		(*this).addInstruction(GO, 0);			// 4
+		(*this).addInstruction(RIGHT);			// 5
+		(*this).addInstruction(GO, 0);			// 6
+		(*this).addInstruction(HOP);			// 7
+		(*this).addInstruction(GO, 0);			// 8
+		(*this).addInstruction(INFECT);			// 9
+		(*this).addInstruction(GO, 0);			// 10
 	}
 	else if(initial == 't') { // trap
-		(*this).addInstruction(if_enemy, 3);
-		(*this).addInstruction(lft);
-		(*this).addInstruction(go, 0);
-		(*this).addInstruction(infect);
-		(*this).addInstruction(go, 0);
+		(*this).addInstruction(IF_ENEMY, 3);
+		(*this).addInstruction(LEFT);
+		(*this).addInstruction(GO, 0);
+		(*this).addInstruction(INFECT);
+		(*this).addInstruction(GO, 0);
 	} // initialized constructor
 }
 void Species::addInstruction(Instruction ins) { // adds actions
@@ -63,6 +63,7 @@ pair<Instruction, int> Species::nextInstruction(int pc) {
 
 Creature::Creature() { // default constructor
 	isNull = true;
+	didMove = true;
 }
 Creature::Creature(const Species& s, int d) { // initialized constructor
 	_s = s;
@@ -74,49 +75,54 @@ Creature::Creature(const Species& s, int d) { // initialized constructor
 void Creature::makeMove(Darwin& d, int i) {
 	// moves
 	if(!isNull && !didMove) {
-		cout << "test" << endl;
+		// cout << _s.name << " " << direction << endl;
 		if(pc >= (int) (_s.instructions).size())
 			pc = 0;
 		pair<Instruction, int> nextIns = _s.nextInstruction(pc);
 		switch(nextIns.first) {
-			case hop: {
+			case HOP: {
 				Creature* c_pointer = &(d.spaceAhead(*this, i));
 				if(c_pointer != this || (*c_pointer).isNull) {
 					if(direction == 0) {	// west
 						Creature c_tmp = *this;
+						++(c_tmp.pc);
+						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i - 1] = c_tmp;
 					}
 					else if(direction == 1) {	// north
 						Creature c_tmp = *this;
+						++(c_tmp.pc);
+						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i - d.x_axis] = c_tmp;
 					}
 					else if(direction == 2) {	// east
 						Creature c_tmp = *this;
+						++(c_tmp.pc);
+						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i + 1] = c_tmp;
 					}
 					else if(direction == 3) {	// south
 						Creature c_tmp = *this;
+						++(c_tmp.pc);
+						c_tmp.didMove = true;
 						d.grid[i] = *c_pointer;
 						d.grid[i + d.x_axis] = c_tmp;
 					}
 				}
-				++pc;
-				didMove = true;
 			}break;
 		
-			case lft: {
+			case LEFT: {
 				direction -= 1;
-				cout << direction << endl;
 				if(direction < 0)
 					direction = 3;
 				++pc;
 				didMove = true;
 			}break;
 
-			case rght: {
+			case RIGHT: {
 				direction += 1;
 				if(direction > 3)
 					direction = 0;
@@ -124,7 +130,7 @@ void Creature::makeMove(Darwin& d, int i) {
 				didMove = true;
 			}break;
 
-			case infect: {
+			case INFECT: {
 				Creature* c_pointer = &(d.spaceAhead(*this, i));
 				if(c_pointer != this && ((*c_pointer)._s).name != _s.name) {
 					(*c_pointer)._s = _s;
@@ -134,7 +140,7 @@ void Creature::makeMove(Darwin& d, int i) {
 				didMove = true;
 			}break;
 
-			case if_empty: {
+			case IF_EMPTY: {
 				Creature* c_pointer = &(d.spaceAhead(*this, i));
 				if(c_pointer == this || !(*c_pointer).isNull) {
 					++pc;
@@ -146,7 +152,7 @@ void Creature::makeMove(Darwin& d, int i) {
 				}
 			}break;
 
-			case if_wall: {
+			case IF_WALL: {
 				Creature* c_pointer = &(d.spaceAhead(*this, i));
 				if(c_pointer != this) {
 					++pc;
@@ -158,8 +164,9 @@ void Creature::makeMove(Darwin& d, int i) {
 				}
 			}break;
 
-			case if_random: {
+			case IF_RANDOM: {
 				int n = rand();
+				// cout << n << endl;
 				if(n % 2 == 0) {
 					++pc;
 					(*this).makeMove(d, i);
@@ -170,7 +177,7 @@ void Creature::makeMove(Darwin& d, int i) {
 				}
 			}break;
 
-			case if_enemy: {
+			case IF_ENEMY: {
 				Creature* c_pointer = &(d.spaceAhead(*this, i));
 				if(c_pointer == this || (*c_pointer).isNull || ((*c_pointer)._s).name == _s.name) {
 					++pc;
@@ -182,7 +189,7 @@ void Creature::makeMove(Darwin& d, int i) {
 				}
 			}break;
 
-			case go: {
+			case GO: {
 				pc = nextIns.second;
 				(*this).makeMove(d, i);
 			}break;
@@ -216,20 +223,19 @@ Darwin::Darwin(int h, int w) {
 void Darwin::addCreature(const Creature& c, int y, int x) {
 	int position = (x_axis * y) + x; 
 	grid[position] = c;
-	cout << (grid[position]._s).name << endl;
 }
 Creature& Darwin::spaceAhead(Creature& c, int i) {
 	int d = c.direction;
-	if(d == 0 && i - 1 >= 0) // west
+	if(d == 0 && i - 1 >= 0 && (i % x_axis) != 0) // west
 		return grid[i - 1];
 	else if(d == 1 && i - x_axis >= 0) // north
 		return grid[i - x_axis];
-	else if(d == 2 && i + 1 < x_axis*y_axis) // east
+	else if(d == 2 && i + 1 < x_axis*y_axis && ((i + 1) % x_axis) != 0) // east
 		return grid[i + 1];
 	else if(d == 3 && i + x_axis < x_axis*y_axis) // south
 		return grid[i + x_axis]; 
 	else
-		return c;
+		return c; // wall
 }
 void Darwin::createGrid() {
 	cout << "Turn = " << turn << "." << endl;
@@ -256,6 +262,7 @@ void Darwin::executeTurn() {
 		grid[*b].makeMove(*this, *b);
 		++b;
 	}
+	b = (*this).begin();
 	while(b != e) {
 		grid[*b].reset();
 		++b;
