@@ -30,7 +30,7 @@ TEST(DarwinFixture, addCreature_1) {
 	cout << (c._s).name << endl;
 	Darwin d(10, 10);
 	d.addCreature(c, 3, 4);
-	Creature c1 = (d.grid)[19];
+	Creature c1 = (d.grid)[10*3 + 4];
 	cout << (c1._s).name << endl;
 	c1 = (d.grid)[18];
 	cout << (c1._s).name << endl;
@@ -38,13 +38,29 @@ TEST(DarwinFixture, addCreature_1) {
 
 // TEST(DarwinFixture, begin_1) {
 // 	Darwin d;
-// 	D_Iterator b = d.begin();
-// 	D_Iterator e = d.end();
-// 	int i = 0;
+// 	D_Iterator<int> b = d.begin();
+// 	D_Iterator<int> e = d.end();
 // 	while(b != e) {
-// 		++i;
+// 		cout << *b << endl;
+// 		++b;
 // 	}
-// 	ASSERT_EQ(i, 100);
+// 	ASSERT_EQ(*b, 100);
 // }
+
+TEST(DarwinFixture, createGrid_1) {
+	Species s1('f');
+	Species s2('h');
+	Creature c1(s1, 0);
+	Creature c2(s2, 1);
+	Darwin d(10, 10);
+	d.addCreature(c1, 1, 2);
+	d.addCreature(c2, 7, 7);
+	d.createGrid();
+	for(int i = 0; i < 10; i++) {
+		//cout << (d.grid[10*1 + 2]).direction << endl;
+		d.executeTurn();
+		d.createGrid();
+	}
+}
 
 // g++ -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall Darwin.c++ TestDarwin.c++ -o TestDarwin -lgtest -lgtest_main -lpthread

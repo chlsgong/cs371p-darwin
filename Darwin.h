@@ -44,27 +44,56 @@ class Creature {
 		Creature();
 	 	Creature(const Species&, int);
 	 	void makeMove(Darwin&, int);
+	 	void reset();
+};
+
+template<typename T>
+class D_Iterator {
+	private:
+		T _v;
+
+	public:
+		D_Iterator(const T& v) {
+			_v = v;
+		}
+		bool operator == (const D_Iterator<T>& rhs) const {
+			return (_v == rhs._v);
+		}
+		bool operator != (const D_Iterator<T>& rhs) const {
+			return !(*this == rhs);
+		}
+		const T& operator * () const {
+			return _v;
+		}
+		D_Iterator<T> operator ++ () { // pre increment
+			++_v;
+			return *this;
+		}
+		D_Iterator<T> operator ++ (int) { // post increment
+			D_Iterator<T> d = *this;
+			++*this;
+			return d;
+		}
 };
 
 class Darwin { 
 	public:
-		std::vector<Creature> grid;
 		int x_axis;
 		int y_axis;
 		int turn;
 
 	public:
+		std::vector<Creature> grid;
 		Darwin();
 		Darwin(int, int);
 		void addCreature(const Creature&, int, int);
 		Creature& spaceAhead(Creature&, int);
-		// void createGrid(int);
-		// void executeTurn();
-		// D_Iterator begin();
-		// D_Iterator end();
-		// Creature at(int i) {
-		// 	return grid[i];
-		// }
+		// void move(const Creature&, int);
+		void createGrid();
+		void executeTurn();
+		D_Iterator<int> begin();
+		D_Iterator<int> end();
+		Creature at(int);
 };
 
 #endif // DARWIN_H
