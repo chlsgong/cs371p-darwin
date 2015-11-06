@@ -1,8 +1,8 @@
 FILES :=                              \
     .travis.yml                       \
-    darwin-tests/hcg359-RunCollatz.out  \
-    darwin-tests/hcg359-TestCollatz.c++ \
-    darwin-tests/hcg359-TestCollatz.out \
+    darwin-tests/hcg359-RunDarwin.out  \
+    darwin-tests/hcg359-RunDarwin.c++ \
+    darwin-tests/hcg359-RunDarwin.out \
 	Darwin.pdf						 \
     Darwin.c++                       \
     Darwin.h                         \
