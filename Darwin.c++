@@ -8,7 +8,7 @@
 
 using namespace std;
 
-//class Species
+// class Species
 
 Species::Species() { // default constructor
 	name = '.';
@@ -59,7 +59,7 @@ void Species::addInstruction(Instruction ins, int line) { // adds controls
 	control = make_pair(ins, line);
 	instructions.push_back(control);
 }
-pair<Instruction, int> Species::nextInstruction(int pc) {
+pair<Instruction, int> Species::nextInstruction(int pc) { // returns next instruction based on pc
 	assert(pc > -1);
 	assert(pc < (int) instructions.size());
 	return instructions[pc];
@@ -78,12 +78,11 @@ Creature::Creature(const Species& s, int d) { // initialized constructor
 	didMove = false;
 	isNull = false;
 }
-int Creature::makeMove(Darwin& d, int i) {
+int Creature::makeMove(Darwin& d, int i) { // creature executes the moves
 	assert(i > -1);
 	assert(i < (int) (d.grid).size());
 	// moves
 	if(!isNull && !didMove) {
-		// cout << _s.name << " " << direction << endl;
 		if(pc >= (int) (_s.instructions).size())
 			pc = 0;
 		pair<Instruction, int> nextIns = _s.nextInstruction(pc);
@@ -204,13 +203,13 @@ int Creature::makeMove(Darwin& d, int i) {
 	}
 	return pc;
 }
-void Creature::reset() {
+void Creature::reset() { // enables creature to move again
 	didMove = false;
 }
 
 // class Darwin
 
-Darwin::Darwin() {
+Darwin::Darwin() { // default
 	x_axis = 10;
 	y_axis = 10;
 	turn = 0;
@@ -219,7 +218,7 @@ Darwin::Darwin() {
 		grid.push_back(c);
 	}
 }
-Darwin::Darwin(int h, int w) {
+Darwin::Darwin(int h, int w) { // constructor
 	assert(h > 0);
 	assert(w > 0);
 	x_axis = w;
@@ -230,7 +229,7 @@ Darwin::Darwin(int h, int w) {
 		grid.push_back(c);
 	}
 }
-void Darwin::addCreature(const Creature& c, int y, int x) {
+void Darwin::addCreature(const Creature& c, int y, int x) { // puts creatures into grid
 	assert(y > -1);
 	assert(y < y_axis);
 	assert(x > -1);
@@ -238,7 +237,7 @@ void Darwin::addCreature(const Creature& c, int y, int x) {
 	int position = (x_axis * y) + x; 
 	grid[position] = c;
 }
-Creature& Darwin::spaceAhead(Creature& c, int i) {
+Creature& Darwin::spaceAhead(Creature& c, int i) { // returns the space in front of the crature
 	assert(i > -1);
 	assert(i < (int) grid.size());
 	int d = c.direction;
@@ -253,7 +252,7 @@ Creature& Darwin::spaceAhead(Creature& c, int i) {
 	else
 		return c; // wall
 }
-void Darwin::createGrid() {
+void Darwin::createGrid() { // prints grid
 	cout << "Turn = " << turn << "." << endl;
 	cout << "  ";
 	for(int i = 0; i < x_axis; i++) {
@@ -270,7 +269,7 @@ void Darwin::createGrid() {
 	}
 	cout << endl;
 }
-void Darwin::executeTurn() {
+void Darwin::executeTurn() { // iterates through grid and invokes each creature to move
 	++turn; 
 	D_Iterator<int> b = (*this).begin();
 	D_Iterator<int> e = (*this).end();
@@ -284,7 +283,7 @@ void Darwin::executeTurn() {
 		++b;
 	}
 }
-Creature Darwin::at(int i) {
+Creature Darwin::at(int i) { // get creature at index i of grid
 	assert(i > -1);
 	assert(i < (int) grid.size());
 	return grid[i];

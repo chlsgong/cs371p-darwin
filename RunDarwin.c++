@@ -253,14 +253,14 @@ int main () {
     }
 
     Species best('b');
-    best.addInstruction(IF_EMPTY, 4);
-    best.addInstruction(IF_ENEMY, 6);
-    best.addInstruction(RIGHT);
-    best.addInstruction(GO, 0);
-    best.addInstruction(HOP);
-    best.addInstruction(GO, 0);
-    best.addInstruction(INFECT);
-    best.addInstruction(GO, 0);
+    best.addInstruction(IF_ENEMY, 6);    // 0
+    best.addInstruction(IF_EMPTY, 4);    // 1
+    best.addInstruction(RIGHT);          // 2
+    best.addInstruction(GO, 0);          // 3
+    best.addInstruction(HOP);            // 4
+    best.addInstruction(GO, 0);          // 5
+    best.addInstruction(INFECT);         // 6
+    best.addInstruction(GO, 0);          // 7
 
     for(int i = 0; i < 10; i++) {
         int p = rand() % 5184;

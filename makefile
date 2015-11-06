@@ -1,19 +1,17 @@
 FILES :=                              \
     .travis.yml                       \
-#    collatz-tests/EID-RunCollatz.in   \
-#    collatz-tests/EID-RunCollatz.out  \
-#    collatz-tests/EID-TestCollatz.c++ \
-#    collatz-tests/EID-TestCollatz.out \
-#	Darwin.pdf						  \
+    darwin-tests/hcg359-RunCollatz.out  \
+    darwin-tests/hcg359-TestCollatz.c++ \
+    darwin-tests/hcg359-TestCollatz.out \
+	Darwin.pdf						 \
     Darwin.c++                       \
     Darwin.h                         \
     Darwin.log                       \
     html                             \
     RunDarwin.c++                    \
-    RunDarwin.in                     \
     RunDarwin.out                    \
     TestDarwin.c++                   \
-    TestDarwin.out
+    TestDarwin.out					 \
 
 CXX        := g++-4.8
 CXXFLAGS   := -pedantic -std=c++11 -Wall

@@ -1,0 +1,77 @@
+commit 87fd7638a14c1087fe4620af4034ec5853ecd140
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Nov 5 17:42:51 2015 -0600
+
+    all working code
+
+commit 75da15027d3d92667443fc82dbbb4e6722a3b6b0
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Nov 5 17:08:31 2015 -0600
+
+    added all unit tests
+
+commit d6d10126136aa929269aa1166b58a2a81d434384
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Nov 5 13:20:36 2015 -0600
+
+    added more unit tests
+
+commit 974ca3c19b9d03855ee64409ab75a9111ff797f5
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Nov 5 05:37:38 2015 -0600
+
+    added test cases
+
+commit 4c4b53da3b941a8023ecf623c0ea87d56d5ee11b
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Nov 5 05:20:52 2015 -0600
+
+    edited makefile to make travis build
+
+commit d11e98e452b86b90a9350900ef0e2cf4ebc2dd6d
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Nov 5 05:04:04 2015 -0600
+
+    working code
+
+commit 404d3b9d642c3b59bb9721e3d9b3ce69bc593453
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Thu Nov 5 00:24:40 2015 -0600
+
+    created print method
+
+commit 493b97d736e63a5a9eb32bce2271bd7fe5b48a4b
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Wed Nov 4 20:33:35 2015 -0600
+
+    created instruction execution method
+
+commit 96d38ec94c89c54b2c83f5303a522384bd79ee40
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Wed Nov 4 11:26:47 2015 -0600
+
+    added iterators
+
+commit d940cde4d7ac3b588823872a131fb3ad1e0f5111
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Tue Nov 3 23:27:25 2015 -0600
+
+    created classes, haven't tested
+
+commit 6b05c44c846ee9eb4bcc9ca5d3781d02ac3839e9
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Tue Nov 3 17:22:26 2015 -0600
+
+    started designing classes and interface
+
+commit 60bfc35e0fad1e5def28ab31367993f2c1632efd
+Author: Charles Gong <chlsgong@gmail.com>
+Date:   Mon Oct 26 14:19:41 2015 -0500
+
+    initial commit
+
+commit b3328951d60f07ec8ab4006b756f7557610b9cd3
+Author: chlsgong <chlsgong@gmail.com>
+Date:   Sun Oct 25 20:14:10 2015 -0500
+
+    Initial commit
